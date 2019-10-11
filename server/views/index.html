@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <link rel="stylesheet" href="./style.css"> -->
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            color: rgb(67, 82, 97);
+            /* cursor: none; */
+        }
+
+        body {
+            margin: 0;
+            background: rgb(186, 190, 191);
+            background: linear-gradient(127deg, rgba(186, 190, 191, 1) 0%, rgba(150, 151, 164, 1) 100%);
+            height: 100vh;
+        }
+
+        main {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: stretch;
+            height: 100vh;
+            padding: 10px;
+            ;
+        }
+
+        .group {
+            flex-basis: calc(50% - 10px);
+            text-align: center;
+            padding: 10px;
+            /* border: 2px solid #FFF; */
+            margin: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: stretch;
+            background: rgb(233, 223, 223);
+            background: linear-gradient(321deg, rgba(233, 223, 223, 1) 0%, rgba(255, 255, 255, 1) 100%);
+            border-radius: 5px;
+        }
+
+        .group h2 {
+            margin: auto 10px;
+        }
+
+        .button-group {
+            display: flex;
+            width: 100%;
+            border-radius: 5px;
+            box-shadow: 0px 2px 6px -3px rgba(0, 0, 0, 0.301), 0px 0px 20px 0px rgba(0, 0, 0, 0.171);
+            overflow: hidden;
+        }
+
+        .button-group button {
+            background: rgb(255, 255, 255);
+            border: none;
+            color: rgb(80, 12, 12);
+            display: block;
+            flex-basis: 50%;
+            padding: 10px;
+            font-size: 2em;
+            margin: 0px;
+            color: rgba(51, 51, 51, 0.74);
+
+        }
+
+        .button-group .on {
+            background: rgb(34, 147, 199);
+            color: rgb(190, 232, 238);
+
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <main>
+        <div class="group" data-group="sink">
+            <h2>Kitchen Light</h2>
+            <div class="button-group">
+                <button class="on">ON</button>
+                <button class="off">OFF</button>
+            </div>
+        </div>
+        <div class="group" data-group="lrLamp">
+            <h2>Living Room Lamp</h2>
+            <div class="button-group">
+                <button class="on">ON</button>
+                <button class="off">OFF</button>
+            </div>
+        </div>
+        <div class="group" data-group="bedroom">
+            <h2>Bedroom Lights</h2>
+            <div class="button-group">
+                <button class="on">ON</button>
+                <button class="off">OFF</button>
+            </div>
+        </div>
+        <div class="group" data-group="hall">
+            <h2>Hallway Lights</h2>
+            <div class="button-group">
+                <button class="on">ON</button>
+                <button class="off">OFF</button>
+            </div>
+        </div>
+    </main>
+    <!-- <script src="script.js"></script> -->
+    <script>
+        const url = 'http://10.0.0.192:3000/assistant';
+        let onOff;
+        let msg;
+        let message;
+
+        const buttons = document.querySelectorAll('button');
+        async function sendMsg(message) {
+            try {
+                const response = await fetch(url, {
+                    method: 'POST', // or 'PUT'
+                    body: JSON.stringify(message), // data can be `string` or {object}!
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                const json = await response.json();
+                console.log('Success:', JSON.stringify(json));
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        buttons.forEach(button => {
+            button.addEventListener('click', e => {
+                const group = e.target.parentElement.parentElement;
+                console.log(group);
+                if (e.target.classList.contains('on')) {
+                    onOff = 'Turn on';
+                    console.log(onOff);
+                } else if (e.target.classList.contains('off')) {
+                    onOff = 'Turn off';
+                }
+                switch (group.dataset.group) {
+                    case 'sink':
+                        msg = 'sink light';
+                        break;
+
+                    case 'lrLamp':
+                        msg = 'living room lamp';
+                        break;
+
+                    case 'bedroom':
+                        msg = 'bedroom lights';
+                        break;
+
+                    case 'hall':
+                        msg = 'hall light';
+                        break;
+
+                    default:
+                        break;
+                }
+                message = { user: 'marc', command: `${onOff} ${msg}` };
+                sendMsg(message);
+            });
+        });
+    </script>
+</body>
+
+</html>
