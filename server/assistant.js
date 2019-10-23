@@ -1,13 +1,10 @@
 const async = require('async');
 const GoogleAssistant = require('google-assistant');
-const FileReader = require('wav').Reader;
 const FileWriter = require('wav').FileWriter;
-//const wavFileInfo = require('wav-file-info');
 
 const terminalImage = require('terminal-image');
 const path = require('path');
 const fs = require("fs");
-var tou8 = require('buffer-to-uint8array');
 
 
 const defaultAudio = false;
