@@ -27,7 +27,7 @@
     "buffer-to-uint8array": "^1.1.0",
     "cli-color": "^1.2.0",
     "ejs": "^2.7.1",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "google-assistant": "^0.6.0",
     "ip": "^1.1.5",
     "lowdb": "^1.0.0",
